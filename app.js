@@ -1320,3 +1320,177 @@ function togglePasswordVisibility(inputId, btn) {
         icon.className = 'fas fa-eye';
     }
 }
+/* ============================================
+   🎨 التحديثات الجديدة
+   ============================================ */
+
+// ============ شاشة الترحيب ============
+function hideSplashScreen() {
+    const splash = document.getElementById('splashScreen');
+    if (!splash) return;
+    
+    setTimeout(() => {
+        splash.classList.add('hidden');
+        setTimeout(() => {
+            splash.style.display = 'none';
+        }, 700);
+    }, 2200);
+}
+
+// ============ إظهار/إخفاء حقول OBB و DATA حسب نوع اللعبة ============
+function toggleGameTypeFields() {
+    const gameType = document.querySelector('input[name="gameType"]:checked');
+    if (!gameType) return;
+    
+    const obbGroup = document.getElementById('obbFieldGroup');
+    const dataGroup = document.getElementById('dataFieldGroup');
+    const obbInput = document.getElementById('obbInput');
+    const dataInput = document.getElementById('dataInput');
+    
+    const value = gameType.value;
+    
+    // OBB
+    if (value === 'apk-obb' || value === 'apk-obb-data') {
+        if (obbGroup) obbGroup.style.display = 'block';
+    } else {
+        if (obbGroup) obbGroup.style.display = 'none';
+        if (obbInput) obbInput.value = '';
+    }
+    
+    // DATA
+    if (value === 'apk-obb-data') {
+        if (dataGroup) dataGroup.style.display = 'block';
+    } else {
+        if (dataGroup) dataGroup.style.display = 'none';
+        if (dataInput) dataInput.value = '';
+    }
+}
+
+// ============ رفع ملف من الجهاز (تحويل لـ Base64) ============
+function handleFileSelect(event, targetInputId) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const targetInput = document.getElementById(targetInputId);
+    if (!targetInput) return;
+    
+    // لو الملف كبير (أكبر من 5MB) نحذره
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('⚠️ الملف كبير! الأفضل ترفعه على MediaFire أو GitHub وحط الرابط', 'warning', 6000);
+        event.target.value = '';
+        return;
+    }
+    
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+        targetInput.value = e.target.result;
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        showToast(`✅ تم تحميل الملف (${sizeMB} MB)`, 'success');
+    };
+    
+    reader.onerror = function() {
+        showToast('❌ فشل قراءة الملف', 'error');
+    };
+    
+    reader.readAsDataURL(file);
+}
+
+// ============ إظهار/إخفاء كلمة المرور ============
+function togglePasswordVisibility(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    
+    const icon = btn.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+    } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+    }
+}
+
+// ============ تعديل دالة handleAddGame لدعم النوع الجديد ============
+window.handleAddGame = function(event) {
+    event.preventDefault();
+    
+    if (!isDeveloper) {
+        showToast('غير مصرح', 'error');
+        return;
+    }
+    
+    const form = event.target;
+    const formData = new FormData(form);
+    
+    // الحصول على نوع اللعبة
+    const gameType = document.querySelector('input[name="gameType"]:checked')?.value || 'apk-only';
+    
+    const obbUrl = formData.get('obbUrl')?.trim() || null;
+    const dataUrl = formData.get('dataUrl')?.trim() || null;
+    
+    // التحقق من الروابط حسب النوع
+    if (gameType === 'apk-obb' && !obbUrl) {
+        showToast('يجب إضافة رابط OBB', 'error');
+        return;
+    }
+    if (gameType === 'apk-obb-data') {
+        if (!obbUrl) {
+            showToast('يجب إضافة رابط OBB', 'error');
+            return;
+        }
+        if (!dataUrl) {
+            showToast('يجب إضافة رابط DATA', 'error');
+            return;
+        }
+    }
+    
+    const newGame = {
+        id: generateId(),
+        title: formData.get('title').trim(),
+        category: formData.get('category'),
+        description: formData.get('description').trim(),
+        version: formData.get('version').trim(),
+        size: formData.get('size').trim(),
+        cover: formData.get('cover').trim(),
+        apkUrl: formData.get('apkUrl').trim(),
+        obbUrl: obbUrl,
+        dataUrl: dataUrl,
+        package: formData.get('package').trim() || null,
+        rating: formData.get('rating') || '4.5',
+        gameType: gameType,
+        downloads: 0,
+        createdAt: Date.now(),
+        createdBy: DEV_ACCOUNT.name
+    };
+    
+    // التحقق
+    if (!newGame.title || !newGame.apkUrl || !newGame.cover) {
+        showToast('يرجى ملء جميع الحقول المطلوبة', 'error');
+        return;
+    }
+    
+    // الحفظ
+    const games = getGames();
+    games.push(newGame);
+    saveGames(games);
+    
+    showToast(`تم إضافة "${newGame.title}" بنجاح 🎮`, 'success');
+    
+    // تفريغ الفورم وإعادة التهيئة
+    form.reset();
+    toggleGameTypeFields();
+    
+    // تحديث قائمة الإدارة
+    renderManageGames();
+};
+
+// ============ تهيئة شاشة الترحيب عند التحميل ============
+document.addEventListener('DOMContentLoaded', function() {
+    // إخفاء شاشة الترحيب بعد التحميل
+    hideSplashScreen();
+    
+    // تهيئة حقول النوع
+    setTimeout(() => toggleGameTypeFields(), 100);
+});

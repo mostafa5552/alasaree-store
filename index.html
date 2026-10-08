@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="متجر عالسريع - حمّل أفضل الألعاب APK + OBB + DATA بسرعة وأمان">
+    <meta name="description" content="متجر عالسريع - حمّل أفضل الألعاب بسرعة وأمان">
     <meta name="author" content="DESHA.245">
+    <meta name="theme-color" content="#1a0b2e">
     <title>عالسريع | متجر الألعاب</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" 
-          href="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/dcbe3ae7-7c18-43cf-8e70-c2b73089969e.png">
+          href="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/3f89f44b-e8ca-421d-a8eb-b3f0e1a92204.png">
     
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
@@ -25,13 +26,27 @@
 </head>
 <body>
 
+    <!-- ============ شاشة الترحيب ============ -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-content">
+            <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/3f89f44b-e8ca-421d-a8eb-b3f0e1a92204.png" 
+                 alt="عالسريع" 
+                 class="splash-logo">
+            <h1 class="splash-title">عالسريع</h1>
+            <p class="splash-tagline">مع متجر عالسريع كل حاجه عالسريع طبعًا</p>
+            <div class="splash-loader">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
     <!-- ============ شريط التنقل ============ -->
     <nav class="navbar">
         <div class="nav-container">
             
             <!-- اللوجو -->
             <a href="#" class="nav-logo" onclick="navigateTo('home'); return false;">
-                <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/dcbe3ae7-7c18-43cf-8e70-c2b73089969e.png" 
+                <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/3f89f44b-e8ca-421d-a8eb-b3f0e1a92204.png" 
                      alt="عالسريع" 
                      class="logo-img">
                 <div class="logo-text">
@@ -308,31 +323,90 @@
                         </div>
                     </div>
 
+                    <!-- صورة اللعبة -->
                     <div class="form-group">
-                        <label>رابط صورة اللعبة *</label>
-                        <input type="url" name="cover" required 
-                               placeholder="https://example.com/image.jpg" autocomplete="off">
+                        <label>صورة اللعبة *</label>
+                        <div class="input-with-tabs">
+                            <input type="url" name="cover" id="coverInput" required 
+                                   placeholder="https://example.com/image.jpg" autocomplete="off">
+                            <label class="file-label">
+                                <i class="fas fa-upload"></i> اختيار صورة
+                                <input type="file" accept="image/*" hidden onchange="handleFileSelect(event, 'coverInput')">
+                            </label>
+                        </div>
+                        <small>ضع رابط صورة أو اختر صورة من جهازك</small>
                     </div>
 
+                    <!-- نوع اللعبة -->
+                    <div class="form-group">
+                        <label>📦 نوع ملفات اللعبة *</label>
+                        <div class="radio-group">
+                            <label class="radio-card">
+                                <input type="radio" name="gameType" value="apk-only" checked onchange="toggleGameTypeFields()">
+                                <div class="radio-content">
+                                    <i class="fab fa-android"></i>
+                                    <strong>APK فقط</strong>
+                                    <small>لعبة بدون ملفات إضافية</small>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="gameType" value="apk-obb" onchange="toggleGameTypeFields()">
+                                <div class="radio-content">
+                                    <i class="fas fa-archive"></i>
+                                    <strong>APK + OBB</strong>
+                                    <small>لعبة مع ملف OBB</small>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="gameType" value="apk-obb-data" onchange="toggleGameTypeFields()">
+                                <div class="radio-content">
+                                    <i class="fas fa-folder-open"></i>
+                                    <strong>APK + OBB + DATA</strong>
+                                    <small>لعبة مع OBB و DATA</small>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- رابط APK -->
                     <div class="form-group">
                         <label>رابط ملف APK *</label>
-                        <input type="url" name="apkUrl" required 
-                               placeholder="https://www.mediafire.com/file/xxxxx" autocomplete="off">
-                        <small>مثال: رابط MediaFire أو Google Drive أو GitHub</small>
+                        <div class="input-with-tabs">
+                            <input type="url" name="apkUrl" id="apkInput" required 
+                                   placeholder="https://www.mediafire.com/file/xxxxx" autocomplete="off">
+                            <label class="file-label">
+                                <i class="fas fa-upload"></i> اختيار ملف
+                                <input type="file" hidden onchange="handleFileSelect(event, 'apkInput')">
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>رابط ملف OBB (اختياري)</label>
-                        <input type="url" name="obbUrl" 
-                               placeholder="https://www.mediafire.com/file/xxxxx/obb" autocomplete="off">
-                        <small>لو اللعبة محتاجة OBB، ضع الرابط هنا</small>
+                    <!-- رابط OBB -->
+                    <div class="form-group" id="obbFieldGroup" style="display: none;">
+                        <label>رابط ملف OBB</label>
+                        <div class="input-with-tabs">
+                            <input type="url" name="obbUrl" id="obbInput" 
+                                   placeholder="https://www.mediafire.com/file/xxxxx/obb" autocomplete="off">
+                            <label class="file-label">
+                                <i class="fas fa-upload"></i> اختيار ملف
+                                <input type="file" hidden onchange="handleFileSelect(event, 'obbInput')">
+                            </label>
+                        </div>
+                        <small>ملف OBB يوضع في: Android/obb/[package name]</small>
                     </div>
 
-                    <div class="form-group">
-                        <label>رابط ملف DATA (اختياري)</label>
-                        <input type="url" name="dataUrl" 
-                               placeholder="https://www.mediafire.com/file/xxxxx/data" autocomplete="off">
-                        <small>لو اللعبة محتاجة DATA، ضع الرابط هنا</small>
+                    <!-- رابط DATA -->
+                    <div class="form-group" id="dataFieldGroup" style="display: none;">
+                        <label>رابط ملف DATA</label>
+                        <div class="input-with-tabs">
+                            <input type="url" name="dataUrl" id="dataInput" 
+                                   placeholder="https://www.mediafire.com/file/xxxxx/data" autocomplete="off">
+                            <label class="file-label">
+                                <i class="fas fa-upload"></i> اختيار ملف
+                                <input type="file" hidden onchange="handleFileSelect(event, 'dataInput')">
+                            </label>
+                        </div>
+                        <small>ملف DATA يوضع في: Android/data/[package name]</small>
                     </div>
 
                     <div class="form-row">
@@ -340,7 +414,7 @@
                             <label>اسم الباكدج (Package Name)</label>
                             <input type="text" name="package" 
                                    placeholder="com.example.game" autocomplete="off">
-                            <small>يظهر في اسم ملف OBB (مثال: main.1.com.example.game.obb)</small>
+                            <small>يظهر في اسم ملف OBB</small>
                         </div>
                         <div class="form-group">
                             <label>التقييم المبدئي (0-5)</label>
@@ -509,7 +583,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/dcbe3ae7-7c18-43cf-8e70-c2b73089969e.png" 
+                <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/3f89f44b-e8ca-421d-a8eb-b3f0e1a92204.png" 
                      alt="DESHA.245" class="footer-logo">
                 <h3>عالسريع</h3>
                 <p>متجرك المفضل لتحميل الألعاب بسرعة وأمان</p>
