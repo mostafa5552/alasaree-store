@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="متجر عالسريع - حمّل أفضل الألعاب APK + OBB + DATA بسرعة وأمان">
+    <meta name="author" content="DESHA.245">
+    <title>عالسريع | متجر الألعاب</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" 
+          href="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/dcbe3ae7-7c18-43cf-8e70-c2b73089969e.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" 
+          rel="stylesheet">
+</head>
+<body>
+
+    <!-- ============ شريط التنقل ============ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            
+            <!-- اللوجو -->
+            <a href="#" class="nav-logo" onclick="navigateTo('home'); return false;">
+                <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/dcbe3ae7-7c18-43cf-8e70-c2b73089969e.png" 
+                     alt="عالسريع" 
+                     class="logo-img">
+                <div class="logo-text">
+                    <span class="store-name">عالسريع</span>
+                    <span class="dev-name">DESHA.245</span>
+                </div>
+            </a>
+
+            <!-- روابط التنقل -->
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" class="nav-link active" data-page="home" onclick="navigateTo('home'); return false;">
+                    <i class="fas fa-home"></i> الرئيسية
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="games" onclick="navigateTo('games'); return false;">
+                    <i class="fas fa-gamepad"></i> الألعاب
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="patches" onclick="navigateTo('patches'); return false;">
+                    <i class="fas fa-tools"></i> الباتشات
+                </a></li>
+                <li><a href="#" class="nav-link" data-page="favorites" onclick="navigateTo('favorites'); return false;">
+                    <i class="fas fa-heart"></i> المفضلة
+                </a></li>
+                <li id="devPanelLink" style="display:none;">
+                    <a href="#" class="nav-link dev-link" data-page="devpanel" onclick="navigateTo('devpanel'); return false;">
+                        <i class="fas fa-cog"></i> لوحة المطور
+                    </a>
+                </li>
+            </ul>
+
+            <!-- أزرار اليمين -->
+            <div class="nav-actions">
+                
+                <!-- زر الوضع الليلي -->
+                <button class="icon-btn" id="themeToggle" title="تبديل الوضع">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <!-- زر الحساب -->
+                <button class="icon-btn" id="userBtn" onclick="openAuthModal()" title="الحساب">
+                    <i class="fas fa-user"></i>
+                </button>
+                
+                <!-- زر القائمة للموبايل -->
+                <button class="icon-btn menu-btn" id="menuToggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============ المحتوى الرئيسي ============ -->
+    <main id="mainContent">
+
+        <!-- ===== الصفحة الرئيسية ===== -->
+        <section class="page active" id="page-home">
+            
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        مرحباً بك في <span class="gradient-text">عالسريع</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        حمّل أفضل الألعاب بصيغة <strong>APK + OBB + DATA</strong> بسرعة وأمان تام
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="navigateTo('games')">
+                            <i class="fas fa-gamepad"></i> تصفح الألعاب
+                        </button>
+                        <button class="btn btn-secondary" onclick="navigateTo('patches')">
+                            <i class="fas fa-tools"></i> الباتشات
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- إحصائيات سريعة -->
+            <div class="stats-section">
+                <div class="stat-card">
+                    <i class="fas fa-gamepad"></i>
+                    <h3 id="statGames">0</h3>
+                    <p>لعبة متاحة</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-download"></i>
+                    <h3 id="statDownloads">0</h3>
+                    <p>عملية تحميل</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tools"></i>
+                    <h3 id="statPatches">0</h3>
+                    <p>باتش متاح</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="statUsers">0</h3>
+                    <p>مستخدم</p>
+                </div>
+            </div>
+
+            <!-- أحدث الألعاب -->
+            <div class="section-container">
+                <div class="section-header">
+                    <h2><i class="fas fa-fire"></i> أحدث الألعاب</h2>
+                    <a href="#" class="see-all" onclick="navigateTo('games'); return false;">
+                        عرض الكل <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+                <div class="games-grid" id="latestGames">
+                    <!-- يتم ملؤها بـ JavaScript -->
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===== صفحة الألعاب ===== -->
+        <section class="page" id="page-games">
+            <div class="page-header">
+                <h1><i class="fas fa-gamepad"></i> كل الألعاب</h1>
+                <p>اكتشف مجموعتنا من الألعاب المميزة</p>
+            </div>
+
+            <!-- أدوات البحث والفلترة -->
+            <div class="games-toolbar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث عن لعبة...">
+                </div>
+                
+                <div class="filter-box">
+                    <select id="categoryFilter">
+                        <option value="all">كل الأقسام</option>
+                        <option value="action">أكشن</option>
+                        <option value="adventure">مغامرات</option>
+                        <option value="sports">رياضة</option>
+                        <option value="puzzle">ألغاز</option>
+                        <option value="strategy">استراتيجية</option>
+                        <option value="racing">سباق</option>
+                        <option value="other">أخرى</option>
+                    </select>
+                    
+                    <select id="sortFilter">
+                        <option value="newest">الأحدث</option>
+                        <option value="rating">الأعلى تقييماً</option>
+                        <option value="downloads">الأكثر تحميلاً</option>
+                        <option value="name">الاسم (أ-ي)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="games-grid" id="gamesGrid">
+                <!-- يتم ملؤها بـ JavaScript -->
+            </div>
+
+            <!-- رسالة "لا توجد نتائج" -->
+            <div class="empty-state" id="emptyGames" style="display:none;">
+                <i class="fas fa-search"></i>
+                <h3>لا توجد ألعاب مطابقة</h3>
+                <p>جرب كلمات بحث أخرى أو غيّر الفلتر</p>
+            </div>
+        </section>
+
+        <!-- ===== صفحة الباتشات ===== -->
+        <section class="page" id="page-patches">
+            <div class="page-header">
+                <h1><i class="fas fa-tools"></i> الباتشات</h1>
+                <p>أحدث الباتشات والتحديثات لجميع الألعاب</p>
+            </div>
+
+            <div class="patches-list" id="patchesList">
+                <!-- يتم ملؤها بـ JavaScript -->
+            </div>
+
+            <div class="empty-state" id="emptyPatches" style="display:none;">
+                <i class="fas fa-tools"></i>
+                <h3>لا توجد باتشات حالياً</h3>
+                <p>سيتم إضافة الباتشات قريباً</p>
+            </div>
+        </section>
+
+        <!-- ===== صفحة المفضلة ===== -->
+        <section class="page" id="page-favorites">
+            <div class="page-header">
+                <h1><i class="fas fa-heart"></i> المفضلة</h1>
+                <p>الألعاب اللي حفظتها للرجوع لها لاحقاً</p>
+            </div>
+
+            <div class="games-grid" id="favoritesGrid">
+                <!-- يتم ملؤها بـ JavaScript -->
+            </div>
+
+            <div class="empty-state" id="emptyFavorites">
+                <i class="fas fa-heart-broken"></i>
+                <h3>لا توجد ألعاب في المفضلة</h3>
+                <p>اضغط على ❤️ في أي لعبة لإضافتها هنا</p>
+                <button class="btn btn-primary" onclick="navigateTo('games')">
+                    تصفح الألعاب
+                </button>
+            </div>
+        </section>
+
+        <!-- ===== صفحة تفاصيل اللعبة ===== -->
+        <section class="page" id="page-game-detail">
+            <button class="btn-back" onclick="navigateTo('games')">
+                <i class="fas fa-arrow-right"></i> رجوع
+            </button>
+            <div id="gameDetailContent">
+                <!-- يتم ملؤها بـ JavaScript -->
+            </div>
+        </section>
+
+        <!-- ===== لوحة المطور ===== -->
+        <section class="page" id="page-devpanel">
+            <div class="page-header">
+                <h1><i class="fas fa-cog"></i> لوحة المطور</h1>
+                <p>مرحباً DESHA.245 - إدارة الألعاب والباتشات</p>
+            </div>
+
+            <!-- تبويبات لوحة المطور -->
+            <div class="tabs">
+                <button class="tab active" data-tab="tab-add-game" onclick="switchTab('tab-add-game')">
+                    <i class="fas fa-plus"></i> إضافة لعبة
+                </button>
+                <button class="tab" data-tab="tab-manage-games" onclick="switchTab('tab-manage-games')">
+                    <i class="fas fa-list"></i> إدارة الألعاب
+                </button>
+                <button class="tab" data-tab="tab-add-patch" onclick="switchTab('tab-add-patch')">
+                    <i class="fas fa-plus-circle"></i> إضافة باتش
+                </button>
+                <button class="tab" data-tab="tab-manage-patches" onclick="switchTab('tab-manage-patches')">
+                    <i class="fas fa-tools"></i> إدارة الباتشات
+                </button>
+            </div>
+
+            <!-- تبويب: إضافة لعبة -->
+            <div class="tab-content active" id="tab-add-game">
+                <form class="dev-form" id="addGameForm" onsubmit="handleAddGame(event)" autocomplete="off">
+                    <h3>🎮 إضافة لعبة جديدة</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم اللعبة *</label>
+                            <input type="text" name="title" required placeholder="مثال: Subway Surfers" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>القسم *</label>
+                            <select name="category" required>
+                                <option value="">اختر القسم</option>
+                                <option value="action">أكشن</option>
+                                <option value="adventure">مغامرات</option>
+                                <option value="sports">رياضة</option>
+                                <option value="puzzle">ألغاز</option>
+                                <option value="strategy">استراتيجية</option>
+                                <option value="racing">سباق</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>الوصف *</label>
+                        <textarea name="description" required rows="3" 
+                                  placeholder="وصف مختصر للعبة..." autocomplete="off"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>الإصدار *</label>
+                            <input type="text" name="version" required placeholder="1.0.0" autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label>الحجم *</label>
+                            <input type="text" name="size" required placeholder="850 MB" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>رابط صورة اللعبة *</label>
+                        <input type="url" name="cover" required 
+                               placeholder="https://example.com/image.jpg" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label>رابط ملف APK *</label>
+                        <input type="url" name="apkUrl" required 
+                               placeholder="https://www.mediafire.com/file/xxxxx" autocomplete="off">
+                        <small>مثال: رابط MediaFire أو Google Drive أو GitHub</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>رابط ملف OBB (اختياري)</label>
+                        <input type="url" name="obbUrl" 
+                               placeholder="https://www.mediafire.com/file/xxxxx/obb" autocomplete="off">
+                        <small>لو اللعبة محتاجة OBB، ضع الرابط هنا</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>رابط ملف DATA (اختياري)</label>
+                        <input type="url" name="dataUrl" 
+                               placeholder="https://www.mediafire.com/file/xxxxx/data" autocomplete="off">
+                        <small>لو اللعبة محتاجة DATA، ضع الرابط هنا</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم الباكدج (Package Name)</label>
+                            <input type="text" name="package" 
+                                   placeholder="com.example.game" autocomplete="off">
+                            <small>يظهر في اسم ملف OBB (مثال: main.1.com.example.game.obb)</small>
+                        </div>
+                        <div class="form-group">
+                            <label>التقييم المبدئي (0-5)</label>
+                            <input type="number" name="rating" min="0" max="5" step="0.1" value="4.5">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-plus"></i> إضافة اللعبة
+                    </button>
+                </form>
+            </div>
+
+            <!-- تبويب: إدارة الألعاب -->
+            <div class="tab-content" id="tab-manage-games">
+                <h3>📋 إدارة الألعاب</h3>
+                <div id="manageGamesList" class="manage-list">
+                    <!-- يتم ملؤها بـ JavaScript -->
+                </div>
+            </div>
+
+            <!-- تبويب: إضافة باتش -->
+            <div class="tab-content" id="tab-add-patch">
+                <form class="dev-form" id="addPatchForm" onsubmit="handleAddPatch(event)" autocomplete="off">
+                    <h3>🔧 إضافة باتش جديد</h3>
+                    
+                    <div class="form-group">
+                        <label>اسم الباتش *</label>
+                        <input type="text" name="title" required 
+                               placeholder="مثال: باتش Subway Surfers Unlimited Coins" autocomplete="off">
+                    </div>
+
+                    <div class="form-group">
+                        <label>الوصف *</label>
+                        <textarea name="description" required rows="4" 
+                                  placeholder="مميزات الباتش..." autocomplete="off"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>رابط التحميل *</label>
+                        <input type="url" name="url" required 
+                               placeholder="https://www.mediafire.com/file/xxxxx" autocomplete="off">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-plus"></i> إضافة الباتش
+                    </button>
+                </form>
+            </div>
+
+            <!-- تبويب: إدارة الباتشات -->
+            <div class="tab-content" id="tab-manage-patches">
+                <h3>🔧 إدارة الباتشات</h3>
+                <div id="managePatchesList" class="manage-list">
+                    <!-- يتم ملؤها بـ JavaScript -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============ نافذة تسجيل الدخول ============ -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAuthModal()" type="button">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="tabUserLogin" onclick="switchAuthTab('user')" type="button">
+                    <i class="fas fa-user"></i> مستخدم
+                </button>
+                <button class="auth-tab" id="tabDevLogin" onclick="switchAuthTab('dev')" type="button">
+                    <i class="fas fa-user-shield"></i> مطور
+                </button>
+            </div>
+
+            <!-- تسجيل المستخدم -->
+            <div class="auth-content active" id="authUser">
+                <h2>👋 أهلاً بك</h2>
+                <p>ادخل اسمك عشان تحفظ مفضلتك وتقدر تقيم الألعاب</p>
+                
+                <form id="userLoginForm" onsubmit="handleUserLogin(event)" autocomplete="off">
+                    <div class="form-group">
+                        <label>اسمك</label>
+                        <input type="text" id="userNameInput" required 
+                               placeholder="مثال: أحمد" maxlength="20"
+                               autocomplete="off"
+                               autocorrect="off"
+                               autocapitalize="off"
+                               spellcheck="false">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-sign-in-alt"></i> دخول
+                    </button>
+                </form>
+
+                <div class="auth-divider">أو</div>
+                
+                <button class="btn btn-secondary btn-full" onclick="continueAsGuest()" type="button" 
+                        style="background: var(--bg-secondary); color: var(--text-primary); border: 2px solid var(--border-color);">
+                    <i class="fas fa-user-secret"></i> الدخول كضيف
+                </button>
+            </div>
+
+            <!-- تسجيل المطور -->
+            <div class="auth-content" id="authDev">
+                <h2>🔐 دخول المطور</h2>
+                <p>مخصص لـ DESHA.245 فقط</p>
+                
+                <form id="devLoginForm" onsubmit="handleDevLogin(event)" autocomplete="off">
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="text" id="devEmailInput" required 
+                               placeholder="أدخل البريد الإلكتروني"
+                               autocomplete="off"
+                               autocorrect="off"
+                               autocapitalize="off"
+                               spellcheck="false"
+                               readonly
+                               onfocus="this.removeAttribute('readonly');">
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <div class="password-field">
+                            <input type="password" id="devPasswordInput" required 
+                                   placeholder="أدخل كلمة المرور"
+                                   autocomplete="new-password"
+                                   autocorrect="off"
+                                   autocapitalize="off"
+                                   spellcheck="false"
+                                   readonly
+                                   onfocus="this.removeAttribute('readonly');">
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('devPasswordInput', this)">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-shield-alt"></i> دخول المطور
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ نافذة تأكيد ============ -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content modal-small">
+            <h3 id="confirmTitle">تأكيد</h3>
+            <p id="confirmMessage">هل أنت متأكد؟</p>
+            <div class="modal-actions">
+                <button class="btn btn-danger" id="confirmYes" type="button">نعم</button>
+                <button class="btn btn-secondary" id="confirmNo" type="button" 
+                        style="background: var(--bg-secondary); color: var(--text-primary);">
+                    إلغاء
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ الإشعارات (Toast) ============ -->
+    <div id="toastContainer"></div>
+
+    <!-- ============ الفوتر ============ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <img src="https://i.supaimg.com/9b836138-e901-4e3b-a57b-85af24b46cef/dcbe3ae7-7c18-43cf-8e70-c2b73089969e.png" 
+                     alt="DESHA.245" class="footer-logo">
+                <h3>عالسريع</h3>
+                <p>متجرك المفضل لتحميل الألعاب بسرعة وأمان</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="#" onclick="navigateTo('home'); return false;">الرئيسية</a></li>
+                    <li><a href="#" onclick="navigateTo('games'); return false;">الألعاب</a></li>
+                    <li><a href="#" onclick="navigateTo('patches'); return false;">الباتشات</a></li>
+                    <li><a href="#" onclick="navigateTo('favorites'); return false;">المفضلة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <ul class="social-links">
+                    <li><a href="#"><i class="fab fa-whatsapp"></i> واتساب</a></li>
+                    <li><a href="#"><i class="fab fa-telegram"></i> تليجرام</a></li>
+                    <li><a href="#"><i class="fas fa-envelope"></i> البريد</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 عالسريع - جميع الحقوق محفوظة</p>
+            <p>صُنع بـ ❤️ بواسطة <strong>DESHA.245</strong></p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
