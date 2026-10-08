@@ -1494,3 +1494,96 @@ document.addEventListener('DOMContentLoaded', function() {
     // تهيئة حقول النوع
     setTimeout(() => toggleGameTypeFields(), 100);
 });
+/* ============ فتح نافذة اختيار الملفات ============ */
+function triggerFileInput(inputId) {
+    const input = document.getElementById(inputId);
+    if (!input) {
+        console.error('لم يتم العثور على:', inputId);
+        return;
+    }
+    input.value = '';
+    input.click();
+}
+
+/* ============ تحديث زر لوحة المطور ============ */
+function updateDevPanelLink() {
+    const link = document.getElementById('devPanelLink');
+    if (!link) return;
+    
+    if (isDeveloper) {
+        link.classList.add('visible');
+        link.style.display = 'block';
+    } else {
+        link.classList.remove('visible');
+        link.style.display = 'none';
+    }
+}
+
+/* ============ إضافة رابط لوحة المطور في الفوتر ============ */
+function updateFooterDevLink() {
+    const footerQuickLinks = document.getElementById('footerQuickLinks');
+    if (!footerQuickLinks) return;
+    
+    const existingLink = document.getElementById('footerDevLink');
+    if (existingLink) existingLink.remove();
+    
+    if (isDeveloper) {
+        const li = document.createElement('li');
+        li.id = 'footerDevLink';
+        li.innerHTML = `
+            <a href="#" onclick="navigateTo('devpanel'); return false;" 
+               style="color: var(--gold-dark); font-weight: 800;">
+                <i class="fas fa-cog"></i> لوحة المطور
+            </a>
+        `;
+        footerQuickLinks.appendChild(li);
+    }
+}
+
+/* ============ تعديل دالة حفظ المطور ============ */
+function saveDevAndUpdate(dev) {
+    if (dev) {
+        saveToStorage(STORAGE_KEYS.DEV, dev);
+        isDeveloper = true;
+    } else {
+        localStorage.removeItem(STORAGE_KEYS.DEV);
+        isDeveloper = false;
+    }
+    updateDevPanelLink();
+    updateFooterDevLink();
+}
+
+/* ============ تهيئة عند التحميل ============ */
+document.addEventListener('DOMContentLoaded', function() {
+    updateDevPanelLink();
+    updateFooterDevLink();
+    
+    setTimeout(() => {
+        updateDevPanelLink();
+        updateFooterDevLink();
+    }, 500);
+});
+// ============ إصلاح سريع: ربط زر لوحة المطور ============
+setTimeout(() => {
+    if (isDeveloper) {
+        const link = document.getElementById('devPanelLink');
+        if (link) {
+            link.classList.add('visible');
+            link.style.display = 'block';
+        }
+        
+        // إضافة الرابط في الفوتر
+        const footerLinks = document.getElementById('footerQuickLinks');
+        if (footerLinks && !document.getElementById('footerDevLink')) {
+            const li = document.createElement('li');
+            li.id = 'footerDevLink';
+            li.innerHTML = `
+                <a href="#" onclick="navigateTo('devpanel'); return false;" 
+                   style="color: var(--gold-dark); font-weight: 800;">
+                    <i class="fas fa-cog"></i> لوحة المطور
+                </a>
+            `;
+            footerLinks.appendChild(li);
+        }
+    }
+}, 300);
